@@ -1,0 +1,100 @@
+
+			
+				
+			
+			// Moving player with dice values provided by input file
+			pre_position = die1 + die2;
+			outToFile += p.moveTo(pre_position); //Move action by current player
+
+			// Output to the screen 
+			System.out.print(outTemp = p.getName()+" rolled a "+die1+ " and a "+die2+ ". "+p.getName()+" is at location "+p.getLocation()+". ");
+			outToFile += outTemp;
+			System.out.print(outTemp = "Energy = "+(p.getEnergy()+pre_position)+"-" +pre_position+" = "+p.getEnergy()+" .");
+			outToFile += outTemp;
+			//System.out.print("Energy -"+pre_position+" ! Energy = "+p.getEnergy()+".");
+
+
+		 
+
+
+		/* Initializes a variable player_pos to the current location of the player to avoid  
+		   writing p.getLocation() all the time.  */
+		if(p.getLocation() == 0)
+		player_pos = 0; // Fix for setting position to 0 in debugging mode
+		else
+		player_pos = p.getLocation();  
+
+		
+		/* Checks if the player has landed in a special position to execute the right action 
+		   and it also checks  if it is not landing in a special
+		   position twice in the same turn (obstacle == false)     */
+		if(racetrack.isSpecial(player_pos) && (obstacle==false) &&(!p.isEliminated()))
+		{
+			if(!this.isDebugging())   // Fix for debugging mode multiple special locations
+			obstacle = true;	      // and For Normal Game it sets obstacle to true to avoid a player executing
+									  // a special position action more than one in the same turn
+
+			if (racetrack.getCell(player_pos)=='d')
+			{
+				outToFile += p.pickCardFortune(deck);
+			}
+			else if (racetrack.getCell(player_pos)=='s')
+			{
+				p.setPosition(68);
+				System.out.print(outTemp = "Found a shorcut! Moving to position 68. ");
+				outToFile += outTemp;
+			}
+			else if (racetrack.getCell(player_pos)=='w')
+			{
+				outToFile += p.spinWheelFortune(wheel);
+			}
+			else if (racetrack.getCell(player_pos)=='?')
+			{
+				int input = 0;
+				String inputIn = "";
+				do
+				{
+					do
+					{
+						System.out.println("Enter 1 to spin the wheel or 2 to pick a card:  ");
+						inputIn = kb.next();
+						if(!inputIn.matches("-?\\d+"))
+							System.out.println("Please enter a number.");
+					}while(!inputIn.matches("-?\\d+"));
+					input = Integer.parseInt(inputIn);
+					/*try{
+						input = kb.nextInt();
+					}
+					catch(InputMismatchException e)
+					{
+						System.out.println("You did not enter a number! Game Over!");
+						System.exit(0);
+						//input = 0;
+					}*/
+
+
+					if(input==1)
+					{
+						outToFile += p.spinWheelFortune(wheel);
+					}
+					else if( input == 2 )
+					{
+						outToFile += p.pickCardFortune(deck);
+					}
+					else
+					{
+						System.out.println("You did not enter 1 or 2.");
+					}
+				}while( !((input >= 1) && (input <= 2)));
+			}
+
+			System.out.println(outTemp = "You are at location " + p.getLocation());
+			outToFile += outTemp + "\n";
+		}
+		else
+		{
+			System.out.println();
+			outToFile += "\n";
+		}
+		
+		//kb.close();

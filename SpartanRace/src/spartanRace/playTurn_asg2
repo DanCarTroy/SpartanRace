@@ -1,0 +1,83 @@
+		// Normal Game
+		if(!this.isDebugging())
+		{   
+			
+			int myPlayerNum = 0;
+			String myPlayeIn = "";
+			do
+			{
+				// Rolling the dice
+				do
+				{
+					System.out.println("Player "+p.getName()+ " enter a "+p.getMyNum()+" to roll the dice "  );
+					myPlayeIn = kb.next();
+					if(!myPlayeIn.matches("-?\\d+"))
+						System.out.println("Please enter a number.");
+				}while(!myPlayeIn.matches("-?\\d+"));
+				myPlayerNum = Integer.parseInt(myPlayeIn);
+				
+				/*try{
+					myPlayerNum = kb.nextInt();
+				}
+				catch(InputMismatchException e)
+				{
+					System.out.println("You did not enter a number!");
+					System.exit(0);
+					//myPlayerNum = 0;
+				}*/
+	
+				if(myPlayerNum != p.getMyNum())	
+					System.out.println("Please write your player number("+p.getMyNum()+" ) and press Enter to roll the dice");
+			
+			}while(myPlayerNum != p.getMyNum());
+			
+			dice.throwDice();
+			pre_position = dice.getDie1()+dice.getDie2();
+			outToFile += p.moveTo(pre_position); //Move action by current player
+
+			// Output to the screen 
+			System.out.print(outTemp = p.getName()+" rolled a "+dice.getDie1()+ " and a "+dice.getDie2()+ ". "+p.getName()+" is at location "+p.getLocation()+". ");
+			outToFile += outTemp;
+			System.out.print(outTemp = "Energy = "+(p.getEnergy()+pre_position)+"-" +pre_position+" = "+p.getEnergy()+" .");
+			outToFile += outTemp;
+			//System.out.print("Energy -"+pre_position+" ! Energy = "+p.getEnergy()+".");
+
+
+		} // Debugging Game
+		else
+		{
+			int location = -1;
+			String locationIn = "";
+					
+			do
+			{
+				do
+				{
+					System.out.println("Debugging Mode: \nMove player "+p.getMyNum()+" ("+p.getName()+") to posistion: ");
+					locationIn = kb.next();
+					if(!locationIn.matches("-?\\d+"))
+						System.out.println("Please enter a number.");
+				}while(!locationIn.matches("-?\\d+"));
+				location = Integer.parseInt(locationIn);
+				/*try{
+					location = kb.nextInt();
+				}
+				catch(InputMismatchException e)
+				{
+					System.out.println("You did not enter a number!");
+					System.exit(0);
+					//location = -1;
+				}*/
+				
+				if(location < 0 || location >= SIZE)
+					System.out.println("Enter a number between 0 and "+SIZE+".");
+			}while(location < 0 || location >= SIZE);
+			
+			p.setPosition(location); // Setting the players position
+			
+			// Output to the screen 
+			System.out.print(outTemp = "Player "+p.getName()+" is at location "+p.getLocation()+". ");
+			outToFile += outTemp;
+			System.out.print(outTemp = "Energy -"+location+" ! Energy = "+p.getEnergy()+".");
+			outToFile += outTemp;
+		}
