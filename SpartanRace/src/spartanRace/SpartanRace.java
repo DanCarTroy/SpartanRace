@@ -5,7 +5,7 @@ import java.util.Scanner;
 /*
  * Comp 249/Winter 2014
  * Assignment #2
- * Written by: Daniel Carrera(6729886) 
+ * Written by: Daniel Carrera(6729886) Uploaded to GitHub on Feb, 2017
  * Date: February 2014
  */
 
